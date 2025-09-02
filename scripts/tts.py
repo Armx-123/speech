@@ -5,7 +5,7 @@ from TTS.api import TTS
 output_dir = "tts_outputs"
 os.makedirs(output_dir, exist_ok=True)
 
-sample_text = "Hello, this is a test voice from Coqui TTS. こんにちは、これはテストです。"
+sample_text = "Hello, this is a test voice from Coqui TTS."
 
 # Pick only a few models (to save time)
 models = [
