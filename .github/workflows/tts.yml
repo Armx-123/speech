@@ -22,8 +22,9 @@ jobs:
 
       - name: Run XTTS clone
         run: |
-          export TTS_AUTO_ACCEPT=1
           python - <<'EOF'
+          import os
+          os.environ["TTS_AUTO_ACCEPT"] = "1"
           from TTS.api import TTS
           tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", progress_bar=False)
           tts.tts_to_file(
@@ -33,6 +34,7 @@ jobs:
               file_path="cloned.wav"
           )
           EOF
+
 
       - name: Upload audio
         uses: actions/upload-artifact@v4
