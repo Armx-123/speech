@@ -8,36 +8,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Step 2: Install Python 3.10.11
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: 3.10.11
 
-      - name: Install dependencies
+      # Step 3: Install dependencies
+      - name: Install TTS and Torch CPU
         run: |
           python -m pip install --upgrade pip
           pip install TTS torch torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
 
-      - name: Download XTTS model release
+      # Step 4: Download XTTS model release
+      - name: Download XTTS model
         run: |
           mkdir -p models
           curl -L -o xtts_v2.zip https://github.com/Armx-123/speech/releases/download/v1.0.0/xtts_v2.zip
           unzip xtts_v2.zip -d models/xtts_v2
 
-
-      - name: Download voice sample from release
+      # Step 5: Download voice sample
+      - name: Download voice sample
         run: |
           curl -L -o voice_sample.wav https://github.com/Armx-123/speech/releases/download/v1.0.0/voice_sample.wav
 
-      - name: Run voice cloning script
-        run: |
-          python clone_voice.py
+      # Step 6: Run voice cloning script with TTS_AUTO_ACCEPT
+      - name: Run voice cloning
+        run: python clone_voice.py
         env:
           TTS_AUTO_ACCEPT: 1
 
+      # Step 7: Upload generated audio
       - name: Upload generated audio
         uses: actions/upload-artifact@v4
         with:
