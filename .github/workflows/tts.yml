@@ -20,21 +20,10 @@ jobs:
           pip install TTS==0.22.0
           sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Run XTTS clone
-        run: |
-          python - <<'EOF'
-          import os
-          os.environ["TTS_AUTO_ACCEPT"] = "1"
-          from TTS.api import TTS
-          tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", progress_bar=False)
-          tts.tts_to_file(
-              text="Hello! This is a test of my cloned voice on GitHub Actions.",
-              speaker_wav="voice_sample.wav",
-              language="en",
-              file_path="cloned.wav"
-          )
-          EOF
-
+      - name: Run XTTS script
+        env:
+          TTS_AUTO_ACCEPT: 1
+        run: python run_xtts.py
 
       - name: Upload audio
         uses: actions/upload-artifact@v4
