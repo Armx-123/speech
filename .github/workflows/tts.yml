@@ -5,7 +5,7 @@ on:
 
 jobs:
   clone-voice:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -18,14 +18,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m venv venv
-          venv\Scripts\pip install --upgrade pip
-          venv\Scripts\pip install TTS torch torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
+          python -m pip install --upgrade pip
+          pip install TTS torch torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
 
       - name: Download XTTS model release
         run: |
           curl -L -o xtts_v2.zip https://github.com/Armx-123/speech/releases/download/v1.0.0/xtts_v2.zip
-          powershell -Command "Expand-Archive xtts_v2.zip -DestinationPath models\xtts_v2"
+          unzip xtts_v2.zip -d models/xtts_v2
 
       - name: Download voice sample from release
         run: |
@@ -33,7 +32,7 @@ jobs:
 
       - name: Run voice cloning script
         run: |
-          venv\Scripts\python clone_voice.py
+          python clone_voice.py
         env:
           TTS_AUTO_ACCEPT: 1
 
