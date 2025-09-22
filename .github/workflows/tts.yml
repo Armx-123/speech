@@ -23,8 +23,10 @@ jobs:
 
       - name: Download XTTS model release
         run: |
+          mkdir -p models
           curl -L -o xtts_v2.zip https://github.com/Armx-123/speech/releases/download/v1.0.0/xtts_v2.zip
           unzip xtts_v2.zip -d models/xtts_v2
+
 
       - name: Download voice sample from release
         run: |
