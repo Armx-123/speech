@@ -38,7 +38,7 @@ jobs:
           TTS_AUTO_ACCEPT: 1
 
       - name: Upload generated audio
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cloned-voice
           path: output/*.wav
