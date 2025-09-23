@@ -1,6 +1,19 @@
 import os
-from TTS.api import TTS
 import torch
+from TTS.api import TTS
+
+# ------------------------
+# Patch GPT2InferenceModel
+# ------------------------
+try:
+    from TTS.tts.layers.xtts.gpt import GPT2InferenceModel
+    from transformers.generation.utils import GenerationMixin
+
+    if not issubclass(GPT2InferenceModel, GenerationMixin):
+        GPT2InferenceModel.__bases__ += (GenerationMixin,)
+        print("⚡ Patched GPT2InferenceModel with GenerationMixin")
+except Exception as e:
+    print(f"⚠️ Could not patch GPT2InferenceModel: {e}")
 
 # ------------------------
 # Auto-accept Coqui license
@@ -10,7 +23,7 @@ os.environ["TTS_AUTO_ACCEPT"] = "1"
 # ------------------------
 # Paths
 # ------------------------
-model_dir = "models/xtts_v2"  # folder with model files
+model_dir = "models/xtts_v2"
 config_path = os.path.join(model_dir, "config.json")
 speaker_wav_path = "voice_sample.wav"
 output_file = "output/cloned_speech.wav"
