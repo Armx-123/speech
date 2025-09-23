@@ -5,9 +5,11 @@ from TTS.api import TTS
 os.environ["TTS_AUTO_ACCEPT"] = "1"
 
 # Paths
+# Paths
 model_dir = "models/xtts_v2"
 config_path = os.path.join(model_dir, "config.json")
-model_path = os.path.join(model_dir, "model.pth")
+model_path = model_dir  # <-- pass the directory, not the .pth file
+
 
 # Init TTS
 tts = TTS(model_path=model_path, config_path=config_path, progress_bar=True, gpu=False)
