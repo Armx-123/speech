@@ -2,10 +2,13 @@ import os
 import torch
 from TTS.api import TTS
 
-# Import all classes referenced in the checkpoint
+# Import all classes used in XTTS checkpoints
 from TTS.tts.configs.xtts_config import XttsConfig
-from TTS.tts.models.xtts import XttsAudioConfig
+from TTS.tts.models.xtts import XttsAudioConfig, XttsArgs
 from TTS.config.shared_configs import BaseDatasetConfig
+
+# Register all XTTS-related classes as safe globals (one-time fix)
+torch.serialization.add_safe_globals([XttsConfig, XttsAudioConfig, XttsArgs, BaseDatasetConfig])
 
 # Auto-accept licenses
 os.environ["TTS_AUTO_ACCEPT"] = "1"
@@ -13,10 +16,7 @@ os.environ["TTS_AUTO_ACCEPT"] = "1"
 # Paths
 model_dir = "models/xtts_v2"
 config_path = os.path.join(model_dir, "config.json")
-model_path = model_dir
-
-# Add all safe globals required by XTTS checkpoint
-torch.serialization.add_safe_globals([XttsConfig, XttsAudioConfig, BaseDatasetConfig])
+model_path = model_dir  # point to folder with model.pth inside
 
 # Initialize TTS
 tts = TTS(model_path=model_path, config_path=config_path, progress_bar=True, gpu=False)
