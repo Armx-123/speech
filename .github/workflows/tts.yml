@@ -22,12 +22,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install TTS torch
 
-      - name: Download TTS model
+      - name: Download TTS model from Release
         run: |
           mkdir -p models/xtts_v2
-          curl -L -o xtts_v2.zip https://huggingface.co/coqui/XTTS-v2/resolve/main/xtts_v2.zip
-          unzip -o xtts_v2.zip -d models/xtts_v2
+          curl -L -o xtts_v2.zip https://github.com/Armx-123/speech/releases/download/v1.0.0/xtts_v2.zip
+          unzip xtts_v2.zip -d models/xtts_v2
           ls -R models/xtts_v2
+
 
       - name: Run clone_voice
         run: python clone_voice.py
