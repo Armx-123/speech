@@ -1,18 +1,19 @@
 import os
+import torch
 from TTS.api import TTS
+from TTS.tts.configs.xtts_config import XttsConfig
 
 # Auto-accept licenses
 os.environ["TTS_AUTO_ACCEPT"] = "1"
 
 # Paths
-# Paths
 model_dir = "models/xtts_v2"
 config_path = os.path.join(model_dir, "config.json")
-model_path = model_dir  # <-- pass the directory, not the .pth file
+model_path = model_dir
 
-
-# Init TTS
-tts = TTS(model_path=model_path, config_path=config_path, progress_bar=True, gpu=False)
+# Allow XTTS config global for safe deserialization
+with torch.serialization.add_safe_globals([XttsConfig]):
+    tts = TTS(model_path=model_path, config_path=config_path, progress_bar=True, gpu=False)
 
 # Output folder
 os.makedirs("output", exist_ok=True)
