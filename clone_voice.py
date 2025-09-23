@@ -29,7 +29,15 @@ torch.serialization.add_safe_globals(safe_globals)
 # ------------------------
 # Init TTS
 # ------------------------
-tts = TTS(model_path=model_path, config_path=config_path, progress_bar=True, gpu=False)
+tts = TTS(
+    model_path=model_path,
+    config_path=config_path,
+    progress_bar=True,
+    gpu=False,
+    # Add this to fix GPT2InferenceModel generate issue
+    trust_remote_code=True
+)
+
 
 # ------------------------
 # Output folder
