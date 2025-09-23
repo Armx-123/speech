@@ -42,8 +42,10 @@ os.makedirs("output", exist_ok=True)
 tts_args = {
     "text": "Hello! This is a voice cloned with XTTS running in GitHub Actions.",
     "file_path": "output/cloned_speech.wav",
-    "language": "en"  # Required for multi-lingual models
+    "language": "en",
+    "speaker_wav": "voice_sample.wav"
 }
+
 
 # Add speaker_wav if it exists
 if os.path.isfile(speaker_wav_path):
