@@ -28,5 +28,7 @@ os.makedirs("output", exist_ok=True)
 tts.tts_to_file(
     text="Hello! This is a voice cloned with XTTS running in GitHub Actions.",
     speaker_wav="voice_sample.wav",
-    file_path="output/cloned_speech.wav"
+    file_path="output/cloned_speech.wav",
+    language="en"  # <-- add the language code here
 )
+
