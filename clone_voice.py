@@ -58,7 +58,7 @@ elif speaker_arg:
 # ------------------------
 # Use synthesize instead of tts_to_file to avoid GPT2InferenceModel generate error
 # ------------------------
-wav = tts.synthesize(**tts_args)
+wav = tts.synthesizer(**tts_args)
 tts.save_wav(wav, output_file)
 
 print(f"✅ Speech synthesis finished. Check {output_file}")
