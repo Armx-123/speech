@@ -25,11 +25,12 @@ jobs:
           pip install TTS torch torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
 
       # Step 4: Download XTTS model release
-      - name: Download XTTS model
+      - name: Download XTTS model release
         run: |
-          mkdir -p models
+          mkdir -p models/xtts_v2
           curl -L -o xtts_v2.zip https://github.com/Armx-123/speech/releases/download/v1.0.0/xtts_v2.zip
-          unzip xtts_v2.zip -d models/xtts_v2
+          unzip -q xtts_v2.zip -d models/xtts_v2
+
 
       # Step 5: Download voice sample
       - name: Download voice sample
