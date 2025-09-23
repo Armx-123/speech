@@ -10,7 +10,7 @@ os.environ["TTS_AUTO_ACCEPT"] = "1"
 # ------------------------
 # Paths
 # ------------------------
-model_dir = "models/xtts_v2"  # directory, not .pth
+model_dir = "models/xtts_v2"  # folder, not .pth file
 config_path = os.path.join(model_dir, "config.json")
 speaker_wav_path = "voice_sample.wav"
 output_file = "output/cloned_speech.wav"
@@ -55,6 +55,10 @@ if os.path.isfile(speaker_wav_path):
 elif speaker_arg:
     tts_args["speaker"] = speaker_arg
 
-tts.tts_to_file(**tts_args)
+# ------------------------
+# Use synthesize instead of tts_to_file to avoid GPT2InferenceModel generate error
+# ------------------------
+wav = tts.synthesize(**tts_args)
+tts.save_wav(wav, output_file)
 
 print(f"✅ Speech synthesis finished. Check {output_file}")
