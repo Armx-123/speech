@@ -12,8 +12,8 @@ os.environ["TTS_AUTO_ACCEPT"] = "1"
 # ------------------------
 model_dir = "models/xtts_v2"
 config_path = os.path.join(model_dir, "config.json")
-model_path = model_dir  # Directory, not .pth file
-speaker_wav_path = "voice_sample.wav"  # Optional, must exist and be valid WAV
+model_path = model_dir  # Directory instead of .pth
+speaker_wav_path = "voice_sample.wav"
 
 # ------------------------
 # Safe globals for PyTorch 2.6+
@@ -45,12 +45,19 @@ if hasattr(tts, "speakers") and tts.speakers:
 # ------------------------
 # Run speech synthesis
 # ------------------------
-tts.tts_to_file(
-    text="Hello! This is a voice cloned with XTTS running in GitHub Actions.",
-    file_path="output/cloned_speech.wav",
-    language="en",
-    speaker=speaker_arg,
-    speaker_wav=speaker_wav_path if os.path.isfile(speaker_wav_path) else None
-)
+if os.path.isfile(speaker_wav_path):
+    tts.tts_to_file(
+        text="Hello! This is a voice cloned with XTTS running in GitHub Actions.",
+        file_path="output/cloned_speech.wav",
+        language="en",
+        speaker_wav=speaker_wav_path
+    )
+else:
+    tts.tts_to_file(
+        text="Hello! This is a voice cloned with XTTS running in GitHub Actions.",
+        file_path="output/cloned_speech.wav",
+        language="en",
+        speaker=speaker_arg
+    )
 
 print("✅ Speech synthesis finished. Check output/cloned_speech.wav")
