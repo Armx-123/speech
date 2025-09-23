@@ -11,9 +11,11 @@ model_dir = "models/xtts_v2"
 config_path = os.path.join(model_dir, "config.json")
 model_path = model_dir
 
-# Allow XTTS config global for safe deserialization
-with torch.serialization.add_safe_globals([XttsConfig]):
-    tts = TTS(model_path=model_path, config_path=config_path, progress_bar=True, gpu=False)
+# Register the safe global so torch.load will accept XttsConfig
+torch.serialization.add_safe_globals([XttsConfig])
+
+# Initialize TTS
+tts = TTS(model_path=model_path, config_path=config_path, progress_bar=True, gpu=False)
 
 # Output folder
 os.makedirs("output", exist_ok=True)
