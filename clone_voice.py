@@ -12,7 +12,8 @@ os.environ["TTS_AUTO_ACCEPT"] = "1"
 # ------------------------
 model_dir = "models/xtts_v2"
 config_path = os.path.join(model_dir, "config.json")
-model_path = os.path.join(model_dir, "model.pth")
+# Use directory, not the .pth file
+model_path = model_dir
 speaker_wav_path = "voice_sample.wav"  # Optional, must exist and be valid WAV
 
 # ------------------------
@@ -24,18 +25,6 @@ from TTS.config.shared_configs import BaseDatasetConfig
 
 safe_globals = [XttsConfig, XttsAudioConfig, XttsArgs, BaseDatasetConfig]
 torch.serialization.add_safe_globals(safe_globals)
-
-# ------------------------
-# Patch GPT2InferenceModel to inherit GenerationMixin
-# ------------------------
-from TTS.tts.layers.xtts.gpt import GPT2InferenceModel
-from transformers import GenerationMixin
-
-class GPT2InferenceModelPatched(GPT2InferenceModel, GenerationMixin):
-    pass
-
-import TTS.tts.models.xtts as xtts_module
-xtts_module.GPT2InferenceModel = GPT2InferenceModelPatched
 
 # ------------------------
 # Init TTS
@@ -53,13 +42,16 @@ os.makedirs("output", exist_ok=True)
 tts_args = {
     "text": "Hello! This is a voice cloned with XTTS running in GitHub Actions.",
     "file_path": "output/cloned_speech.wav",
-    "language": "en",  # Required for multi-lingual models
-    "speaker": "p225"  # Required for multi-speaker models, pick one from speakers_xtts.pth
+    "language": "en"  # Required for multi-lingual models
 }
 
 # Add speaker_wav if it exists
 if os.path.isfile(speaker_wav_path):
     tts_args["speaker_wav"] = speaker_wav_path
+
+# If model is multi-speaker and speaker_wav not provided, pick first speaker
+if "speaker_wav" not in tts_args and hasattr(tts, "speakers") and tts.speakers:
+    tts_args["speaker"] = list(tts.speakers.keys())[0]
 
 tts.tts_to_file(**tts_args)
 
