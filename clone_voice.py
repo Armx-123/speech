@@ -12,7 +12,7 @@ os.environ["TTS_AUTO_ACCEPT"] = "1"
 # ------------------------
 model_dir = "models/xtts_v2"
 config_path = os.path.join(model_dir, "config.json")
-model_path = os.path.join(model_dir, "model.pth")
+model_path = model_dir  # Pass the directory, NOT the .pth file
 speaker_wav_path = "voice_sample.wav"  # Optional, must exist and be valid WAV
 
 # ------------------------
